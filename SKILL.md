@@ -50,18 +50,19 @@ A round is one pass from Build to the verifier. Fixing a failed check inside a r
 Tests prove the shape of an outcome, not whether it is good.
 For any change to what an outcome writes or draws, add a quality loop on real model runs.
 
-1. **Rubric.** Write 6 to 8 numbered rules a good marketing manager would apply. Example: "says what the buyer gets first", "no hype the owner did not give", "sounds like the saved voice".
-2. **References.** Keep 3 to 5 examples: some good, some bad, each with one line on why.
-3. **Calibrate the judge first.** Show it one clearly bad and one clearly good page. If it does not say NO to the bad one, fix the rubric before you trust it.
-4. **Run real businesses.** At least 3 different businesses, real model, real outcome steps. Real runs cost money: before each batch, tell your engineer roughly how many model calls it will make and get an OK.
-5. **Code checks facts, the judge checks quality.** The judge is a separate model call, ideally a different model from the writer. It sees the rubric, the references, the owner's inputs, the saved business profile and the finished page the owner will see. It never sees the writer's reasoning.
-6. **Verdict per page:** YES, NO or MAYBE. Each finding gives the rule, the exact words, a fix, and a severity:
+1. **Agree the goal first.** Ask your engineer one high level question before writing any rules: what should the finished output look like, and what makes it good for the owner? Keep it high level, not rule by rule.
+2. **Draft the rubric and references.** From that answer, draft 6 to 8 numbered rules a good marketing manager would apply (for example "says what the buyer gets first", "no hype the owner did not give"), 3 to 5 examples marked good or bad with one line on why, and one sample of the finished output.
+3. **Ask for approval.** Show the draft to your engineer and ask what they think. Change it until they say yes. The agent never judges against rules no person has approved; until then, label every result "judged against draft rules".
+4. **Calibrate the judge first.** Show it one clearly bad and one clearly good page. If it does not say NO to the bad one, fix the rubric before you trust it.
+5. **Run real businesses.** At least 3 different businesses, real model, real outcome steps. Real runs cost money: before each batch, tell your engineer roughly how many model calls it will make and get an OK.
+6. **Code checks facts, the judge checks quality.** The judge is a separate model call, ideally a different model from the writer. It sees the rubric, the references, the owner's inputs, the saved business profile and the finished page the owner will see. It never sees the writer's reasoning.
+7. **Verdict per page:** YES, NO or MAYBE. Each finding gives the rule, the exact words, a fix, and a severity:
    - `must`: the owner would change it before using the page. Only these make a NO.
    - `nice`: a taste preference. Listed, never blocking.
    Ask for at most 3 findings, most important first. Without severity the judge says NO to everything.
-7. **Fixes never add facts.** A fix may only reorder, cut or rephrase what the owner gave. A judge left free will suggest new details, and code that checks numbers will not catch a made up phrase.
-8. **Rework.** Send only the must findings back to the writer, together with its last draft. Tell it to change only what is named and keep every feature. A fresh rewrite drops good parts. At most 2 reworks, then stop and show the owner the round with the fewest must findings.
-9. **Measure.** Record how often the judge says NO and the tokens it costs. A couple of loops is enough. Balance quality against cost.
+8. **Fixes never add facts.** A fix may only reorder, cut or rephrase what the owner gave. A judge left free will suggest new details, and code that checks numbers will not catch a made up phrase.
+9. **Rework.** Send only the must findings back to the writer, together with its last draft. Tell it to change only what is named and keep every feature. A fresh rewrite drops good parts. At most 2 reworks, then stop and show the owner the round with the fewest must findings.
+10. **Measure.** Record how often the judge says NO and the tokens it costs. A couple of loops is enough. Balance quality against cost.
 
 ## Report to your engineer
 
