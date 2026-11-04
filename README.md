@@ -7,7 +7,8 @@ The agent that builds a change never decides it is done: checks pass first, then
 
 ```
 mkdir -p ~/.claude/skills/build-verify-loop
-cp SKILL.md ~/.claude/skills/build-verify-loop/
+cp SKILL.md verify.sh known-failures.txt ~/.claude/skills/build-verify-loop/
+chmod +x ~/.claude/skills/build-verify-loop/verify.sh
 ```
 
 Your agent then picks it up on its own, or you can call it with `/build-verify-loop`.

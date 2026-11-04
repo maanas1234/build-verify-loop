@@ -15,6 +15,8 @@ Write the done condition in one or two lines.
 Say what the owner will see when it works, and which test proves it.
 Run that test first and watch it fail. A test that passes before the change proves nothing.
 
+For a change to what an outcome says, the proving test includes one where a made up fact (a feature, number or claim the owner never gave) is stopped. Every claim must come from the owner's own details.
+
 If the change touches a path named in CODEOWNERS, stop before building. Write what you found in the General questions table and wait for Harish's go.
 
 ## The loop, at most 3 rounds
@@ -22,16 +24,19 @@ If the change touches a path named in CODEOWNERS, stop before building. Write wh
 A round is one pass from Build to the verifier. Fixing a failed check inside a round is fine; going back to Build after a NO starts the next round.
 
 1. **Build.** Make the smallest change that meets the done condition.
-2. **Check.** Run the deterministic checks, in this order. Stop at the first failure.
-   - `pnpm typecheck`
-   - `pnpm exec eslint <changed files>`
-   - `pnpm contracts:check` if you touched `contracts/`
-   - `pnpm exec vitest related --run <changed files>` (runs every test that imports them)
-   - Before a pull request: `pnpm check` in full.
+2. **Check.** Run `~/.claude/skills/build-verify-loop/verify.sh` from inside swayu-app. Do not run the checks by hand or skip one. It runs, in order and stopping at the first failure:
+   - typecheck
+   - lint on the changed files
+   - the contracts check if you touched `contracts/`
+   - every test that touches a changed file
+
+   It prints one line, `VERDICT PASS` or `VERDICT FAIL <step>`, and saves the failing log in `/tmp/verify-bundle/`. Quote that line in your report.
+   - Add `--branch` to check everything the branch changed.
+   - Before a pull request: run `scripts/bring-current.sh`, then `pnpm check` in full. Both must pass.
 3. **On a failure:** read the actual error output. Fix the cause. Go back to step 2. At most 3 fixes per round; if the checks still fail, stop and report.
    - Never weaken, skip or delete a test to get green.
    - Never mark a failure as known on your own. Only your engineer does that, with a reason, and only after it is shown to fail on main too.
-4. **On a pass: separate verifier.** Start a fresh subagent that has not seen your reasoning.
+4. **On a pass: separate verifier.** Start a fresh subagent that has not seen your reasoning. It only reads code and runs checks; it never edits a file, commits or writes anywhere. If your engineer or Harish has not yet allowed a separate reviewer for this job, ask first.
    - Give it the done condition, the `git diff` and the check output. Do not give it your conclusion.
    - Tell it to try to break the change, not to confirm it.
    - It returns exactly one verdict, then its findings. Each finding names the file, the line and a concrete case that fails.
@@ -66,6 +71,10 @@ For any change to what an outcome writes or draws, add a quality loop on real mo
 - For outcomes: how many businesses passed the judge, after how many reworks, and the token cost.
 
 Never say "working" for anything that has not had a real run.
+
+## Commits and pushes
+
+Ask your engineer before every commit and before every push. Show the real check output when you ask. Never commit to main, never force push, never use `--no-verify`.
 
 ## YES is not Done
 
